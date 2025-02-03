@@ -34,7 +34,9 @@ GET /api/classify-number?number=<integer>
 }
 
 ```
-400 Bad Request (For Invalid Inputs)
+
+git push -u origin main
+#### **400 Bad Request (For Invalid Inputs)**
 ```json
 {
     "number": "invalid",
