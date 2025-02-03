@@ -13,7 +13,7 @@ The Number Classification API is a FastAPI-based web service that takes a number
 
 ## API Specification
 ### **Endpoint**
-GET /api/classify-number?number=<integer>
+GET /api/classify-number?number=(integer)
 
 
 ### **Request Parameters**
