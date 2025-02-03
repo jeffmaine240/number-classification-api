@@ -1,4 +1,5 @@
 from fastapi import APIRouter, status
+from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from typing import Optional
 
@@ -9,39 +10,34 @@ number_router = APIRouter()
 number_service = NumberService()
 
 @number_router.get("/classify-number", status_code=status.HTTP_200_OK)
-async def get_classification(number: Optional["str"]=None) -> dict:
-    if number is not None:
-        try:
-            number = int(number)
-            property = set()
-            armstrong = number_service.check_armstrong(number=int(number))
-            if armstrong:
-                property.add("armstrong")
-            property.add(number_service.check_even_or_odd(number=int(number)))
-
-            return JSONResponse(
-                content={
-                    "number": number,
-                    "is_prime": number_service.check_prime(int(number)),
-                    "is_perfect": number_service.check_perfect(int(number)),
-                    "properties": list(property),
-                    "digit_sum": number_service.number_sum(int(number)),
-                    "fun_fact": number_service.get_fun_fact(int(number))
-                },
-                status_code=status.HTTP_200_OK
-            )
-        except ValueError:
-            return JSONResponse(
-                content={
-                    "number": str(number),
-                    "error": True
-                },
-                status_code=status.HTTP_400_BAD_REQUEST
-            )
-    return JSONResponse(
+async def get_classification(number: Optional[str]=None) -> dict:
+    if number is None:
+        return JSONResponse(
         content={
             "number": "Query not provided",
             "error": True
         },
         status_code=status.HTTP_400_BAD_REQUEST
     )
+
+    try:
+        number: int = int(number)
+        return JSONResponse(
+            content={
+                "number": number,
+                "is_prime": number_service.check_prime(number),
+                "is_perfect": number_service.check_perfect(number),
+                "properties": number_service.get_properties(number),
+                "digit_sum": number_service.number_sum(number),
+                "fun_fact": await number_service.get_fun_fact(number)
+            },
+            status_code=status.HTTP_200_OK
+        )
+    except ValueError:
+        return JSONResponse(
+            content={
+                "number": number,
+                "error": True
+            },
+            status_code=status.HTTP_400_BAD_REQUEST
+        )
