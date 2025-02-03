@@ -44,14 +44,6 @@ class NumberService:
         return sum == number
 
     def get_fun_fact(self, number: int):
-        url = f"http://numbersapi.com/{number}"
+        url = f"http://numbersapi.com/{number}/math"
         result = requests.get(url=url)
         return result.text
-
-
-
-
-
-service = NumberService()
-result =  service.get_fun_fact(7777777)
-print(result)
