@@ -24,11 +24,15 @@ class NumberService:
                     divisors_sum += number // i
         return divisors_sum == number
     
-    def number_sum(self, number: int) -> int:
+    def number_sum(self, number: int) -> int | None:
+        if number < 0:
+            return None
         result = sum(int(i) for i in str(number))
         return result
 
     def check_armstrong(self, number: int) -> bool:
+        if number < 0:
+            return False
         number_length = len(str(number))
         result = sum((int(i)**number_length) for i in str(number))
         return result == number
