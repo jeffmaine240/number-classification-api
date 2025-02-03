@@ -14,7 +14,7 @@ async def get_classification(number: Optional[str]=None) -> dict:
     if number is None:
         return JSONResponse(
         content={
-            "number": "Query not provided",
+            "message": "Query not provided",
             "error": True
         },
         status_code=status.HTTP_400_BAD_REQUEST
